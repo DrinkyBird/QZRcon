@@ -757,8 +757,10 @@ void RconWindow::on_lineNickname_textChanged(const QString &arg1)
 
 void RconWindow::on_playerlist_itemClicked(QListWidgetItem *item)
 {
-    QMenu menu;
+
 }
+
+/* Funny close event */
 void RconWindow::on_actionQuit_triggered()
 {
     RconWindow::close();
