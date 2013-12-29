@@ -1,0 +1,588 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>RconWindow</class>
+ <widget class="QMainWindow" name="RconWindow">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>441</width>
+    <height>379</height>
+   </rect>
+  </property>
+  <property name="minimumSize">
+   <size>
+    <width>289</width>
+    <height>379</height>
+   </size>
+  </property>
+  <property name="maximumSize">
+   <size>
+    <width>16777215</width>
+    <height>16777215</height>
+   </size>
+  </property>
+  <property name="windowTitle">
+   <string>QZrcon Utility Console</string>
+  </property>
+  <property name="layoutDirection">
+   <enum>Qt::LeftToRight</enum>
+  </property>
+  <property name="autoFillBackground">
+   <bool>false</bool>
+  </property>
+  <widget class="QWidget" name="centralwidget">
+   <layout class="QVBoxLayout" name="verticalLayout">
+    <item>
+     <widget class="QTextEdit" name="tmplog">
+      <property name="enabled">
+       <bool>true</bool>
+      </property>
+      <property name="sizePolicy">
+       <sizepolicy hsizetype="Ignored" vsizetype="Ignored">
+        <horstretch>0</horstretch>
+        <verstretch>0</verstretch>
+       </sizepolicy>
+      </property>
+      <property name="maximumSize">
+       <size>
+        <width>0</width>
+        <height>0</height>
+       </size>
+      </property>
+      <property name="lineWidth">
+       <number>0</number>
+      </property>
+      <property name="verticalScrollBarPolicy">
+       <enum>Qt::ScrollBarAlwaysOff</enum>
+      </property>
+      <property name="horizontalScrollBarPolicy">
+       <enum>Qt::ScrollBarAlwaysOff</enum>
+      </property>
+      <property name="undoRedoEnabled">
+       <bool>false</bool>
+      </property>
+      <property name="readOnly">
+       <bool>true</bool>
+      </property>
+      <property name="cursorWidth">
+       <number>0</number>
+      </property>
+     </widget>
+    </item>
+    <item>
+     <widget class="QSplitter" name="splitter">
+      <property name="sizePolicy">
+       <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
+        <horstretch>0</horstretch>
+        <verstretch>0</verstretch>
+       </sizepolicy>
+      </property>
+      <property name="orientation">
+       <enum>Qt::Horizontal</enum>
+      </property>
+      <widget class="QTextEdit" name="log">
+       <property name="sizePolicy">
+        <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
+         <horstretch>2</horstretch>
+         <verstretch>0</verstretch>
+        </sizepolicy>
+       </property>
+       <property name="minimumSize">
+        <size>
+         <width>150</width>
+         <height>200</height>
+        </size>
+       </property>
+       <property name="font">
+        <font>
+         <family>Courier</family>
+         <pointsize>8</pointsize>
+        </font>
+       </property>
+       <property name="frameShape">
+        <enum>QFrame::Panel</enum>
+       </property>
+       <property name="frameShadow">
+        <enum>QFrame::Sunken</enum>
+       </property>
+       <property name="lineWidth">
+        <number>1</number>
+       </property>
+       <property name="midLineWidth">
+        <number>0</number>
+       </property>
+       <property name="verticalScrollBarPolicy">
+        <enum>Qt::ScrollBarAsNeeded</enum>
+       </property>
+       <property name="horizontalScrollBarPolicy">
+        <enum>Qt::ScrollBarAlwaysOff</enum>
+       </property>
+       <property name="tabChangesFocus">
+        <bool>true</bool>
+       </property>
+       <property name="undoRedoEnabled">
+        <bool>true</bool>
+       </property>
+       <property name="lineWrapMode">
+        <enum>QTextEdit::WidgetWidth</enum>
+       </property>
+       <property name="readOnly">
+        <bool>true</bool>
+       </property>
+       <property name="tabStopWidth">
+        <number>80</number>
+       </property>
+      </widget>
+      <widget class="QListWidget" name="playerlist">
+       <property name="sizePolicy">
+        <sizepolicy hsizetype="Maximum" vsizetype="Expanding">
+         <horstretch>50</horstretch>
+         <verstretch>0</verstretch>
+        </sizepolicy>
+       </property>
+       <property name="maximumSize">
+        <size>
+         <width>100</width>
+         <height>16777215</height>
+        </size>
+       </property>
+       <property name="frameShape">
+        <enum>QFrame::Panel</enum>
+       </property>
+       <property name="editTriggers">
+        <set>QAbstractItemView::DoubleClicked|QAbstractItemView::EditKeyPressed</set>
+       </property>
+      </widget>
+     </widget>
+    </item>
+    <item>
+     <layout class="QHBoxLayout" name="horizontalLayout">
+      <item>
+       <widget class="QCheckBox" name="checkChat">
+        <property name="text">
+         <string>Chat</string>
+        </property>
+        <property name="checked">
+         <bool>true</bool>
+        </property>
+        <property name="autoRepeat">
+         <bool>false</bool>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QLineEdit" name="lineCommand"/>
+      </item>
+      <item>
+       <widget class="QPushButton" name="buttonSend">
+        <property name="text">
+         <string>Send</string>
+        </property>
+       </widget>
+      </item>
+     </layout>
+    </item>
+    <item>
+     <layout class="QHBoxLayout" name="horizontalLayout_2">
+      <item>
+       <widget class="QLabel" name="nickname">
+        <property name="text">
+         <string>Nickname:</string>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QLineEdit" name="lineNickname"/>
+      </item>
+     </layout>
+    </item>
+    <item>
+     <layout class="QHBoxLayout" name="horizontalLayout_3">
+      <item>
+       <widget class="QLabel" name="status">
+        <property name="sizePolicy">
+         <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
+          <horstretch>0</horstretch>
+          <verstretch>0</verstretch>
+         </sizepolicy>
+        </property>
+        <property name="font">
+         <font>
+          <family>Arial</family>
+          <pointsize>8</pointsize>
+          <weight>50</weight>
+          <bold>false</bold>
+         </font>
+        </property>
+        <property name="text">
+         <string/>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QLabel" name="colorednickname">
+        <property name="maximumSize">
+         <size>
+          <width>150</width>
+          <height>16777215</height>
+         </size>
+        </property>
+        <property name="text">
+         <string/>
+        </property>
+       </widget>
+      </item>
+     </layout>
+    </item>
+   </layout>
+  </widget>
+  <widget class="QMenuBar" name="menubar">
+   <property name="geometry">
+    <rect>
+     <x>0</x>
+     <y>0</y>
+     <width>441</width>
+     <height>25</height>
+    </rect>
+   </property>
+   <widget class="QMenu" name="menuFile">
+    <property name="title">
+     <string>File</string>
+    </property>
+    <addaction name="actionReconnect"/>
+    <addaction name="actionSave_log"/>
+    <addaction name="actionSave_log_html"/>
+    <addaction name="actionClean"/>
+    <addaction name="actionQuit"/>
+   </widget>
+   <widget class="QMenu" name="menuHelp">
+    <property name="title">
+     <string>Help</string>
+    </property>
+    <addaction name="actionAbout"/>
+   </widget>
+   <widget class="QMenu" name="menuOptions">
+    <property name="title">
+     <string>Options</string>
+    </property>
+    <widget class="QMenu" name="menuLogs">
+     <property name="title">
+      <string>Logs</string>
+     </property>
+     <addaction name="actionAuto_save_logs"/>
+     <addaction name="actionSave_in_HTML_Document"/>
+     <addaction name="actionChoose_autosave_path"/>
+    </widget>
+    <widget class="QMenu" name="menuSounds">
+     <property name="title">
+      <string>Sounds</string>
+     </property>
+     <addaction name="actionPlay_chat_sound"/>
+     <addaction name="actionImport_chat_sound"/>
+    </widget>
+    <widget class="QMenu" name="menuRcon">
+     <property name="title">
+      <string>Rcon</string>
+     </property>
+     <addaction name="actionEnable_color_tags"/>
+     <addaction name="actionMove_cursor_to_end_on_message"/>
+     <addaction name="actionRemove_log_messages"/>
+     <addaction name="actionShow_message_time"/>
+     <addaction name="actionRemove_server_log"/>
+    </widget>
+    <widget class="QMenu" name="menuStyle">
+     <property name="title">
+      <string>Style</string>
+     </property>
+     <addaction name="actionSet_Font"/>
+    </widget>
+    <action name=""/>
+    <addaction name="menuRcon"/>
+    <addaction name="menuLogs"/>
+    <addaction name="menuSounds"/>
+    <addaction name="menuStyle"/>
+   </widget>
+   <widget class="QMenu" name="menuActions">
+    <property name="title">
+     <string>Playerlist</string>
+    </property>
+    <addaction name="actionKick_player"/>
+    <addaction name="actionBan_player"/>
+    <addaction name="actionKick_with_reason"/>
+    <addaction name="actionForce_spectate"/>
+    <addaction name="actionMute_player"/>
+    <addaction name="actionUnmute_player"/>
+   </widget>
+   <addaction name="menuFile"/>
+   <addaction name="menuOptions"/>
+   <addaction name="menuActions"/>
+   <addaction name="menuHelp"/>
+  </widget>
+  <action name="actionQuit">
+   <property name="text">
+    <string>Quit</string>
+   </property>
+   <property name="toolTip">
+    <string>Bye bye :)</string>
+   </property>
+  </action>
+  <action name="actionClean">
+   <property name="text">
+    <string>Clean console</string>
+   </property>
+   <property name="toolTip">
+    <string>Remove all text in console</string>
+   </property>
+   <property name="shortcut">
+    <string>Ctrl+L</string>
+   </property>
+  </action>
+  <action name="actionAbout">
+   <property name="text">
+    <string>About</string>
+   </property>
+   <property name="toolTip">
+    <string>Click me!</string>
+   </property>
+   <property name="shortcut">
+    <string>F1</string>
+   </property>
+  </action>
+  <action name="actionRemove_log_messages">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
+   <property name="checked">
+    <bool>true</bool>
+   </property>
+   <property name="text">
+    <string>Remove rcon messages</string>
+   </property>
+   <property name="toolTip">
+    <string>Messages like &quot;-&gt; command (RCON by ip:port)&quot;</string>
+   </property>
+  </action>
+  <action name="actionEnable_color_tags">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
+   <property name="checked">
+    <bool>true</bool>
+   </property>
+   <property name="text">
+    <string>Enable color tags</string>
+   </property>
+   <property name="toolTip">
+    <string>Example: cgText - red</string>
+   </property>
+  </action>
+  <action name="actionShow_message_time">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
+   <property name="checked">
+    <bool>true</bool>
+   </property>
+   <property name="text">
+    <string>Show message time</string>
+   </property>
+   <property name="toolTip">
+    <string>In format [HH:MM:SS] by clientside time</string>
+   </property>
+  </action>
+  <action name="actionKick_player">
+   <property name="text">
+    <string>Kick player</string>
+   </property>
+   <property name="toolTip">
+    <string>Kick him!</string>
+   </property>
+   <property name="shortcut">
+    <string>Ctrl+Shift+K</string>
+   </property>
+  </action>
+  <action name="actionForce_spectate">
+   <property name="text">
+    <string>Force spectate</string>
+   </property>
+   <property name="toolTip">
+    <string>Move player to spectators</string>
+   </property>
+   <property name="shortcut">
+    <string>Ctrl+Shift+S</string>
+   </property>
+  </action>
+  <action name="actionKick_with_reason">
+   <property name="text">
+    <string>Kick (with reason)</string>
+   </property>
+   <property name="shortcut">
+    <string>Ctrl+Shift+H</string>
+   </property>
+  </action>
+  <action name="actionBan_player">
+   <property name="text">
+    <string>Ban player</string>
+   </property>
+   <property name="toolTip">
+    <string>Move player to hell</string>
+   </property>
+   <property name="shortcut">
+    <string>Ctrl+Shift+B</string>
+   </property>
+  </action>
+  <action name="actionRemove_server_log">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
+   <property name="checked">
+    <bool>true</bool>
+   </property>
+   <property name="text">
+    <string>Remove server log</string>
+   </property>
+   <property name="toolTip">
+    <string>Remove last server log messages recived by connect</string>
+   </property>
+  </action>
+  <action name="actionMute_player">
+   <property name="text">
+    <string>Mute player</string>
+   </property>
+   <property name="toolTip">
+    <string>Shut up!</string>
+   </property>
+   <property name="shortcut">
+    <string>Ctrl+Shift+M</string>
+   </property>
+  </action>
+  <action name="actionUnmute_player">
+   <property name="text">
+    <string>Unmute player</string>
+   </property>
+   <property name="toolTip">
+    <string>Delete mute for current player</string>
+   </property>
+   <property name="shortcut">
+    <string>Ctrl+Shift+N</string>
+   </property>
+  </action>
+  <action name="actionSave_log">
+   <property name="text">
+    <string>Save log</string>
+   </property>
+   <property name="toolTip">
+    <string>Save console text to .txt file</string>
+   </property>
+   <property name="shortcut">
+    <string>Ctrl+S</string>
+   </property>
+  </action>
+  <action name="actionSave_log_html">
+   <property name="text">
+    <string>Save log (as HTML)</string>
+   </property>
+   <property name="toolTip">
+    <string>Save console text to .html document (using colors)</string>
+   </property>
+   <property name="shortcut">
+    <string>Ctrl+D</string>
+   </property>
+  </action>
+  <action name="actionPlay_chat_sound">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
+   <property name="checked">
+    <bool>false</bool>
+   </property>
+   <property name="text">
+    <string>Play chat sound</string>
+   </property>
+   <property name="toolTip">
+    <string>Play dsradion.wad when message recived</string>
+   </property>
+  </action>
+  <action name="actionImport_chat_sound">
+   <property name="text">
+    <string>Choose sound file</string>
+   </property>
+   <property name="toolTip">
+    <string>Import chat sound from any path</string>
+   </property>
+  </action>
+  <action name="actionReconnect">
+   <property name="text">
+    <string>Reconnect</string>
+   </property>
+   <property name="toolTip">
+    <string>Do Reconnect!</string>
+   </property>
+   <property name="shortcut">
+    <string>Ctrl+R</string>
+   </property>
+  </action>
+  <action name="actionMove_cursor_to_end_on_message">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
+   <property name="checked">
+    <bool>true</bool>
+   </property>
+   <property name="text">
+    <string>Move cursor to end</string>
+   </property>
+   <property name="toolTip">
+    <string>Move cursor to end if got new message</string>
+   </property>
+  </action>
+  <action name="actionLogs">
+   <property name="text">
+    <string>Logs</string>
+   </property>
+  </action>
+  <action name="actionAuto_save_logs">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
+   <property name="text">
+    <string>Autosave logs</string>
+   </property>
+  </action>
+  <action name="actionSave_in_HTML_Document">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
+   <property name="text">
+    <string>Save in HTML Document</string>
+   </property>
+  </action>
+  <action name="actionChoose_autosave_path">
+   <property name="text">
+    <string>Choose autosave path</string>
+   </property>
+  </action>
+  <action name="actionNew_session">
+   <property name="text">
+    <string>New session</string>
+   </property>
+   <property name="toolTip">
+    <string>Run new QZrcon session!</string>
+   </property>
+   <property name="shortcut">
+    <string>Ctrl+N</string>
+   </property>
+  </action>
+  <action name="actionSet_Font">
+   <property name="text">
+    <string>Set Font</string>
+   </property>
+   <property name="toolTip">
+    <string>Set a custom font</string>
+   </property>
+  </action>
+ </widget>
+ <resources/>
+ <connections/>
+</ui>
