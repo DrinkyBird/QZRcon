@@ -1,0 +1,53 @@
+        ---------------------------------------------------------
+        - QZRcon - Qt-based tool for Zandronum/Skulltag servers -
+        ---------------------------------------------------------
+
+=== Features ===
+
+  -  Cross-platform utility (Windows,Linux,Unix ...)
+  -  Easy Graphical User Interface
+  -  Chat mode with nickname support
+  -  Color codes support (example: \cg - red)
+  -  And more Options...
+
+=== Developers ===
+
+  - Monsterovich - author of this. (For contact: Monsterovich@gmail.com)
+  - Korshun - netcode and etc.
+
+=== Compiliation ===
+
+What do you need:
+
+  -  C++ Compiler (For Windows-like MinGW or MSVC2008 is recomended - tested)
+  -  Qt Library
+  -  QMAKE
+
+This is a typical Qt QMake project.
+
++++ WIN32
+
+  *  Use Qt Creator or other IDE to compile it.
+
++++ Linux/Unix
+
+  -  $ mkdir build
+  -  $ cd build
+  -  $ qmake ..
+  -  $ make clean
+
+You will see your binary. Try to run it;
+   $ ./QZRcon
+
+=== For Developers ===
+
+You may read Rcon protocol documentation.
+Just see RconProtocol.html.
+
+=== Website and contact ===
+
+http://submarine.homeunix7.org/
+Monsterovich@gmail.com
+
+<------------------------------------------------->
+Enjoy it! :D

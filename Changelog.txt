@@ -1,0 +1,76 @@
+=== QZRcon changelog ===
+
+	"+" - Added
+	"*" - Fixed
+
+=== Version: release1 ===
+
+	* Fixed Bug with invalid colored log message
+	+ Added save password checkbox feature
+	+ Added config load/save feature (for password,hostname,port only)
+	* Fixed bug with "\" in log message
+	* Fixed bug with "<" ">" it means HTML code
+	* Fixed bug with "\n" next line not working
+	+ Added message time feature [hh:mm:ss]
+	+ Added understanding CAPS colorcodes (Thanks to Dusk)
+	+ Added additional typing feature:
+			1.If chat checkbox is activated and first symbol is "/", then rcon will send text as command
+			2.If chat checkbox is deactivated and first symbol is ":", then rcon will send text as chat message
+			3.If chat checkbox is activated and first word is "/me", then rcon will send text as *Nickname chat message
+			4.If chat checkbox is deactivated and first word is ":/me", then rcon will send text as Nickname chat message
+	+ Added asking user after exit
+	+ Added total number of admins
+	+ Added \c[color] color tags support
+	+ Added playerlist
+			1.On double click rcon will copy player nickname to command line
+			2.On single click rcon will add player name to the action data - to use action menu (kick,ban) (*)
+	+ Added server will receive all information on connect (Big thanks to Korshun)
+			1. Player list
+			2. Admin count
+			3. Map name
+			4. Server name
+			5. Last server log (you can deactivate it)
+	+ Added action menu (*) and hot keys
+
+=== Version: fixed1 ===
+
+	* Fixed bug with menu (fonts) - action menus
+	+ Added save logs: in plain text, in HTML
+	* Fixed on actions rcon will say error if player is not selected in playerlist
+	+ Added chat sound feature with custom file loading
+
+=== Version: release2 ===
+
+	+ Added "cancel" button to main window
+	* Fixed toAscii() replaced with toLatin1()
+	* Fixed small text bug with /me string
+	* Fixed config will be saved when connect button clicked
+	+ Added force function (press f10) to emulate SVRC_LOGGEDIN if there is packet loss.
+
+=== Version: release2.1 ===
+
+	* Fixed colortags parsing method
+	+ Added config sections
+	+ Added reconnect command
+	+ Added log auto-saving feature (with options)
+	* Fixed chat sound process checking
+	* Fixed rconwindow design bugs
+	* Upgraded menu style
+
+=== Version: fixed2.2 ===
+
+	* Fixed all nextline bugs, finally!
+	* Changed \c[color] tags parsing bugs: now can parse caps \c[COLOR]
+	* Fixed added special place for log autosaving, prevent log clear commands
+
+=== Version: fixed2.3 ===
+
+	* Fixed EndOfLine bug, yeah!
+	+ Added Internet Doom Explorer support: any user can rename rcon exe to 'rcon_utility.exe' and connect through IDE, rcon will read settings.ini file to get server properties.
+	+ Added custom font change function.
+
+=== Version: fixed2.4 ===
+
+	* Fixed font options loading bug from current session
+	+ Added nickname color preview
+	* Fixed quit button
