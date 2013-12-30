@@ -453,6 +453,26 @@ void RconWindow::keyPressEvent(QKeyEvent *event)
     }
 }
 
+void RconWindow::mousePressEvent(QMouseEvent *event)
+{
+    /* Not added. Buttons problem. */
+    /*
+    if ((event->buttons() & Qt::RightButton) == Qt::RightButton)
+    {
+        QListWidgetItem *item = ui->playerlist->itemAt(event->pos());
+
+        if(item)
+        {
+            QPushButton *popupButton = new QPushButton();
+            QMenu *menu = new QMenu(this);
+            menu->addActions(ui->menuActions->actions()); // copy actions from menu
+            popupButton->setMenu(menu);
+            menu->exec(QCursor::pos());
+        }
+    }
+    */
+}
+
 /* Show error message */
 void RconWindow::showMessage(QString message) { QMessageBox::warning(this, "QZRcon error", message); }
 
@@ -753,11 +773,6 @@ void RconWindow::on_lineNickname_textChanged(const QString &arg1)
 {
     ui->colorednickname->setText(ProcessColors(arg1));
     ui->colorednickname->setAlignment(Qt::AlignRight);
-}
-
-void RconWindow::on_playerlist_itemClicked(QListWidgetItem *item)
-{
-
 }
 
 /* Funny close event */

@@ -1,10 +1,9 @@
-
-
 #include "mainwindow.h"
 #include "rconwindow.h"
 #include "aboutwindow.h"
 #include "ui_mainwindow.h"
 #include "rcon.h"
+#include "version.h"
 
 /* Global settings object */
 QSettings *settings = NULL;
@@ -20,7 +19,7 @@ MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent),
     ui(new Ui::MainWindow)
 {
-    qDebug() << "QZRcon started! Hi, everyone :)";
+    qDebug() << "QZRcon " + QString(VERSION) + " started! Hi, everyone :)";
 
     ui->setupUi(this);
     setStatus(tr("Ready"));

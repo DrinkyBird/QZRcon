@@ -87,12 +87,11 @@ private slots:
 
     void on_lineNickname_textChanged(const QString &arg1);
 
-    void on_playerlist_itemClicked(QListWidgetItem *item);
-
     void on_actionQuit_triggered();
 
 protected:
     virtual void keyPressEvent(QKeyEvent *event);
+    virtual void mousePressEvent(QMouseEvent *event);
 
 private:
 
