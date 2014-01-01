@@ -19,7 +19,7 @@ MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent),
     ui(new Ui::MainWindow)
 {
-    qDebug() << "QZRcon " + QString(VERSION) + " started! Hi, everyone :)";
+    qDebug() << "QZRcon " << QString(VERSION) << " started. Hello, world! :)";
 
     ui->setupUi(this);
     setStatus(tr("Ready"));
@@ -104,6 +104,7 @@ void MainWindow::beginConnecting(QHostInfo hostinfo)
     if (hostinfo.error() || hostinfo.addresses().empty())
     {
         showError(hostinfo.errorString());
+        lockGUI(false);
         return;
     }
 
