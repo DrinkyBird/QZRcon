@@ -43,6 +43,7 @@ private slots:
 
     void saveConfig();
     void loadConfig();
+    void loadCTagsConfig(QString filename);
     void saveLog();
 
     void DrawStatus();
