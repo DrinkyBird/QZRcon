@@ -75,3 +75,5 @@
 	+ Added nickname color preview
 	* Fixed quit button
 	* Fixed "invalid address" GUI lock bug
+	* Removed nextline feature.
+	+ Added custom colortags support.
