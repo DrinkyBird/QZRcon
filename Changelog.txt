@@ -75,9 +75,6 @@
 	+ Added nickname color preview
 	* Fixed quit button
 	* Fixed "invalid address" GUI lock bug
-<<<<<<< HEAD
 	* Removed nextline feature.
 	+ Added custom colortags support.
 	+ Added password style to password line.
-=======
->>>>>>> 08a807916d193393fd8971d2021b3ea83fb2458a
