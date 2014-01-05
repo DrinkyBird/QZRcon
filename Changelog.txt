@@ -74,3 +74,4 @@
 	* Fixed font options loading bug from current session
 	+ Added nickname color preview
 	* Fixed quit button
+	* Fixed "invalid address" GUI lock bug

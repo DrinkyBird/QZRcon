@@ -34,7 +34,7 @@ This is a typical Qt QMake project.
   -  $ mkdir build
   -  $ cd build
   -  $ qmake ..
-  -  $ make clean
+  -  $ make
 
 You will see your binary. Try to run it;
    $ ./QZRcon
