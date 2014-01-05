@@ -31,6 +31,9 @@ MainWindow::MainWindow(QWidget *parent) :
 
     loadConfig();
     loadIDEConfig();
+
+    /* Set password style to line */
+    ui->linePassword->setEchoMode(QLineEdit::Password);
 }
 
 MainWindow::~MainWindow()
