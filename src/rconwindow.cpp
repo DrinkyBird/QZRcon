@@ -28,7 +28,7 @@ QString servername; // server name
 QString logautosavepath; // log path
 
 /* Global color tags */
-QSettings *ctags = NULL;
+QSettings *ctagsettings = NULL;
 
 QString defcolor = "000000"; // default color (black)
 /* ----------------------------------------------- */
@@ -54,6 +54,10 @@ RconWindow::RconWindow(QWidget *parent, Rcon *rcon) :
     /* Restore variables from config */
     loadConfig();
 
+    /* Restore colortags from config */
+    loadCTagsConfig("colortags.cfg");
+
+    /* Hello, user! */
     ui->log->insertHtml("Welcome to QZRcon " + QString(VERSION) + "!<br>");
 }
 
@@ -69,35 +73,44 @@ RconWindow::~RconWindow()
     delete ui;
 }
 
+void RconWindow::loadCTagsConfig(QString filename)
+{
+    if (filename != NULL)
+    {
+    if(ctagsettings == NULL)
+        ctagsettings = new QSettings(filename, QSettings::IniFormat);
+    }
+}
+
 void RconWindow::loadConfig()
 {
     settings->beginGroup("User");
-    ui->lineNickname->setText(settings->value("nickname", "").toString());
+        ui->lineNickname->setText(settings->value("nickname", "").toString());
     settings->endGroup();
 
     settings->beginGroup("Rcon");
-    ui->actionEnable_color_tags->setChecked(settings->value("colortags", true).toBool());
-    ui->actionRemove_log_messages->setChecked(settings->value("logmessages", true).toBool());
-    ui->actionShow_message_time->setChecked(settings->value("messagetime", true).toBool());
-    ui->actionRemove_server_log->setChecked(settings->value("noserverlog", false).toBool());
-    ui->actionMove_cursor_to_end_on_message->setChecked(settings->value("movecursor", true).toBool());
+        ui->actionEnable_color_tags->setChecked(settings->value("colortags", true).toBool());
+        ui->actionRemove_log_messages->setChecked(settings->value("logmessages", true).toBool());
+        ui->actionShow_message_time->setChecked(settings->value("messagetime", true).toBool());
+        ui->actionRemove_server_log->setChecked(settings->value("noserverlog", false).toBool());
+        ui->actionMove_cursor_to_end_on_message->setChecked(settings->value("movecursor", true).toBool());
     settings->endGroup();
 
     settings->beginGroup("Sound");
-    ui->actionPlay_chat_sound->setChecked(settings->value("chatsound", false).toBool());
-    chatsound = settings->value("chatsoundpath", QString(QDir::currentPath() + QDir::separator() + "dsradio.wav")).toString();
+        ui->actionPlay_chat_sound->setChecked(settings->value("chatsound", false).toBool());
+        chatsound = settings->value("chatsoundpath", QString(QDir::currentPath() + QDir::separator() + "dsradio.wav")).toString();
     settings->endGroup();
 
     settings->beginGroup("Log");
-    ui->actionAuto_save_logs->setChecked(settings->value("autosavelogs", false).toBool());
-    ui->actionSave_in_HTML_Document->setChecked(settings->value("autosavelogshtml", false).toBool());
-    logautosavepath = settings->value("autosavelogspath", QDir::currentPath()).toString();
+        ui->actionAuto_save_logs->setChecked(settings->value("autosavelogs", false).toBool());
+        ui->actionSave_in_HTML_Document->setChecked(settings->value("autosavelogshtml", false).toBool());
+        logautosavepath = settings->value("autosavelogspath", QDir::currentPath()).toString();
     settings->endGroup();
 
     settings->beginGroup("Style");
-    QFont font;
-    font.fromString(settings->value("font", QFont("Courier", 8).toString()).toString());
-    ui->log->setFont(font);
+        QFont font;
+        font.fromString(settings->value("font", QFont("Courier", 8).toString()).toString());
+        ui->log->setFont(font);
     settings->endGroup();
 }
 
@@ -221,8 +234,22 @@ colorstrings[] =
 
 QString RconWindow::ProcessColors(QString str)
 {
+    /* Use colortags.ini for custom tags */
+    if (ctagsettings != NULL)
+    {
+        ctagsettings->beginGroup("Colortags");
+        for (int i = 0; i < ctagsettings->allKeys().count(); i++)
+        {
+            str.replace(QString("\\c%1").arg(ctagsettings->allKeys()[i]), QString("<font color=#%1>").arg(ctagsettings->value(ctagsettings->allKeys()[i], "").toString()));
+        }
+        for (int i = 0; i < ctagsettings->allKeys().count(); i++)
+        {
+            str.replace(QString("\\c[%1]").arg(ctagsettings->allKeys()[i]), QString("<font color=#%1>").arg(ctagsettings->value(ctagsettings->allKeys()[i], "").toString()));
+        }
+        ctagsettings->endGroup();
+    }
 
-
+    /* Defaults */
     for (size_t i = 0; i < (sizeof colorstrings / sizeof *colorstrings); ++i)
     {
         const struct xcolorinfo& string = colorstrings[i];
