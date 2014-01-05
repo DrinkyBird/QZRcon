@@ -5,6 +5,7 @@
 #include "banwindow.h"
 #include "mutewindow.h"
 #include "ui_rconwindow.h"
+#include "version.h"
 
 /* Static functions */
 static QString escapeMessage(QString str); // convertion to command-like string type
@@ -23,12 +24,11 @@ int playercountdata; // count of players
 
 QString chatsound; // chat sound file
 
-/* Firstline condiions */
-bool firstline = true;
-bool firstlinex = true; // for logs
-
 QString servername; // server name
 QString logautosavepath; // log path
+
+/* Global color tags */
+QSettings *ctags = NULL;
 
 QString defcolor = "000000"; // default color (black)
 /* ----------------------------------------------- */
@@ -53,6 +53,8 @@ RconWindow::RconWindow(QWidget *parent, Rcon *rcon) :
 
     /* Restore variables from config */
     loadConfig();
+
+    ui->log->insertHtml("Welcome to QZRcon " + QString(VERSION) + "!<br>");
 }
 
 RconWindow::~RconWindow()
@@ -219,6 +221,8 @@ colorstrings[] =
 
 QString RconWindow::ProcessColors(QString str)
 {
+
+
     for (size_t i = 0; i < (sizeof colorstrings / sizeof *colorstrings); ++i)
     {
         const struct xcolorinfo& string = colorstrings[i];
@@ -272,17 +276,14 @@ void RconWindow::onMessage(QString message)
     QDateTime time;
     QString messagetime;
 
-    if (enabletime) time = time.currentDateTime();
+    if (enabletime)
+        time = time.currentDateTime();
 
     /* Replace damn protocol color codes to normal color codes */
     message.replace(QString(""), QString("\\c"));
 
     /* For HTML code */
-    QString nextline;
-    QString nextlinex;
-
-    if (!firstline) nextline = "<br>";
-    if (!firstlinex) nextlinex = "<br>";
+    QString nextline = "<br>";
 
     message.replace(QString("<"), QString("&lt;"));
     message.replace(QString(">"), QString("&gt;"));
@@ -302,7 +303,7 @@ void RconWindow::onMessage(QString message)
     /* Show message */
     if (message.lastIndexOf(ignorem) < 0)
     {
-        ui->log->insertHtml(nextline + messagetime + message);
+        ui->log->insertHtml(messagetime + message + nextline);
         if(ui->actionMove_cursor_to_end_on_message->isChecked())
             ui->log->moveCursor(QTextCursor::End);
     }
@@ -310,21 +311,17 @@ void RconWindow::onMessage(QString message)
     /* Print log messages? */
     if ((message.lastIndexOf(ignorem) > 0) && (!ui->actionRemove_log_messages->isChecked()))
     {
-        ui->log->insertHtml(nextline + messagetime + message);
+        ui->log->insertHtml(messagetime + message + nextline);
         if(ui->actionMove_cursor_to_end_on_message->isChecked())
             ui->log->moveCursor(QTextCursor::End);
     }
 
     /* Save messages to another place for log autosaving */
-    if (message.lastIndexOf(ignorem) < 0) ui->tmplog->insertHtml(nextlinex + messagetime + message);
-    if ((message.lastIndexOf(ignorem) > 0) && (!ui->actionRemove_log_messages->isChecked())) ui->tmplog->insertHtml(nextlinex + messagetime + message);
+    if (message.lastIndexOf(ignorem) < 0)
+        ui->tmplog->insertHtml(messagetime + message + nextline);
 
-    /* Check line is first */
-    if ((message.lastIndexOf(ignorem) < 0) || ((message.lastIndexOf(ignorem) > 0) && (!ui->actionRemove_log_messages->isChecked())))
-    {
-        firstline = false;
-        firstlinex = false;
-    }
+    if ((message.lastIndexOf(ignorem) > 0) && (!ui->actionRemove_log_messages->isChecked()))
+        ui->tmplog->insertHtml(messagetime + message + nextline);
 
     /* Process chat sound */
     if (((chatsound == NULL) || (chatsound == "")) && (ui->actionPlay_chat_sound->isChecked()))
@@ -498,7 +495,6 @@ static QString escapeMessage(QString str)
 void RconWindow::on_actionClean_triggered()
 {
     ui->log->clear();
-    firstline = true;
 }
 
 /* Show about window */

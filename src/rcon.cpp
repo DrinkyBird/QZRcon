@@ -112,7 +112,7 @@ void Rcon::reconnect()
     packet.append(CLRC_BEGINCONNECTION);
     packet.append(PROTOCOL_VERSION);
     socket.write(huffmanEncode(packet));
-    emit message("\n"); // make a space
+    emit message("Reconnecting...");
 }
 
 /* Properly disconnect from the server */
