@@ -450,10 +450,11 @@ void RconWindow::keyPressEvent(QKeyEvent *event)
     }
 }
 
+/* Not added since beta2.4.1. Buttons problem. */
+/*
 void RconWindow::mousePressEvent(QMouseEvent *event)
 {
-    /* Not added. Buttons problem. */
-    /*
+
     if ((event->buttons() & Qt::RightButton) == Qt::RightButton)
     {
         QListWidgetItem *item = ui->playerlist->itemAt(event->pos());
@@ -467,8 +468,9 @@ void RconWindow::mousePressEvent(QMouseEvent *event)
             menu->exec(QCursor::pos());
         }
     }
-    */
+
 }
+*/
 
 /* Show error message */
 void RconWindow::showMessage(QString message) { QMessageBox::warning(this, "QZRcon error", message); }
