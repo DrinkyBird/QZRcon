@@ -77,3 +77,4 @@
 	* Fixed "invalid address" GUI lock bug
 	* Removed nextline feature.
 	+ Added custom colortags support.
+	+ Added password style to password line.
