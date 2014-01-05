@@ -241,10 +241,12 @@ QString RconWindow::ProcessColors(QString str)
         for (int i = 0; i < ctagsettings->allKeys().count(); i++)
         {
             str.replace(QString("\\c%1").arg(ctagsettings->allKeys()[i]), QString("<font color=#%1>").arg(ctagsettings->value(ctagsettings->allKeys()[i], "").toString()));
+            str.replace(QString("\\c%1").arg(QString(ctagsettings->allKeys()[i]).toUpper()), QString("<font color=#%1>").arg(ctagsettings->value(ctagsettings->allKeys()[i], "").toString()));
         }
         for (int i = 0; i < ctagsettings->allKeys().count(); i++)
         {
             str.replace(QString("\\c[%1]").arg(ctagsettings->allKeys()[i]), QString("<font color=#%1>").arg(ctagsettings->value(ctagsettings->allKeys()[i], "").toString()));
+            str.replace(QString("\\c[%1]").arg(QString(ctagsettings->allKeys()[i]).toUpper()), QString("<font color=#%1>").arg(ctagsettings->value(ctagsettings->allKeys()[i], "").toString()));
         }
         ctagsettings->endGroup();
     }
