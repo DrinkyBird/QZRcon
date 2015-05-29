@@ -21,7 +21,9 @@ SOURCES += \
     src/aboutwindow.cpp \
     src/kickwindow.cpp \
     src/banwindow.cpp \
-    src/mutewindow.cpp
+    src/mutewindow.cpp \
+    cvarwatchwindow.cpp \
+    src/cvarwatchwindow.cpp
 
 HEADERS  += \
     src/mainwindow.h \
@@ -34,7 +36,9 @@ HEADERS  += \
     src/banwindow.h \
     src/mutewindow.h \
     version.h \
-    src/version.h
+    src/version.h \
+    cvarwatchwindow.h \
+    src/cvarwatchwindow.h
 
 FORMS    += \
     src/mainwindow.ui \
@@ -42,7 +46,9 @@ FORMS    += \
     src/aboutwindow.ui \
     src/kickwindow.ui \
     src/banwindow.ui \
-    src/mutewindow.ui
+    src/mutewindow.ui \
+    cvarwatchwindow.ui \
+    src/cvarwatchwindow.ui
 
 OTHER_FILES += \
     QZrcon.txt \
