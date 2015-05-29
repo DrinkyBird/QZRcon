@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <ui version="4.0">
  <class>CvarWatchWindow</class>
- <widget class="QDialog" name="CvarWatchWindow">
+ <widget class="QWidget" name="CvarWatchWindow">
   <property name="geometry">
    <rect>
     <x>0</x>
@@ -13,16 +13,6 @@
   <property name="windowTitle">
    <string>Watch CVars</string>
   </property>
-  <widget class="QListView" name="listView">
-   <property name="geometry">
-    <rect>
-     <x>10</x>
-     <y>10</y>
-     <width>381</width>
-     <height>251</height>
-    </rect>
-   </property>
-  </widget>
   <widget class="QLineEdit" name="lineEdit">
    <property name="geometry">
     <rect>
@@ -33,7 +23,7 @@
     </rect>
    </property>
   </widget>
-  <widget class="QPushButton" name="watchButton">
+  <widget class="QPushButton" name="watchCvarButton">
    <property name="geometry">
     <rect>
      <x>310</x>
@@ -44,6 +34,16 @@
    </property>
    <property name="text">
     <string>Watch</string>
+   </property>
+  </widget>
+  <widget class="QListView" name="watching">
+   <property name="geometry">
+    <rect>
+     <x>10</x>
+     <y>10</y>
+     <width>381</width>
+     <height>251</height>
+    </rect>
    </property>
   </widget>
  </widget>

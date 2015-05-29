@@ -22,6 +22,7 @@ public:
     ~RconWindow();
 
     void log(QString string, bool resetCursor = true);
+    Rcon *rcon;
 
 
 public slots:
@@ -98,6 +99,8 @@ private slots:
 
     void on_actionAbout_Qt_triggered();
 
+    void on_actionWatch_CVars_triggered();
+
     protected:
     virtual void keyPressEvent(QKeyEvent *event);
     bool eventFilter(QObject *obj, QEvent *event);
@@ -108,7 +111,6 @@ private:
     Ui::RconWindow *ui;
 
     QUdpSocket socket;
-    Rcon *rcon;
 };
 
 #endif // RCONWINDOW_H
