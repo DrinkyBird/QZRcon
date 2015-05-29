@@ -529,7 +529,6 @@ void RconWindow::closeEvent(QCloseEvent *event)
     if (ret == QMessageBox::No) event->ignore();
     else
         rcon->disconnect();
-    }
 }
 
 /* Send commands by enter key */
