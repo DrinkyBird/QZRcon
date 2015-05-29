@@ -306,7 +306,7 @@
    </widget>
    <widget class="QMenu" name="menuActions">
     <property name="title">
-     <string>Playerlist</string>
+     <string>Server Management</string>
     </property>
     <addaction name="actionKick_player"/>
     <addaction name="actionBan_player"/>
@@ -314,6 +314,7 @@
     <addaction name="actionForce_spectate"/>
     <addaction name="actionMute_player"/>
     <addaction name="actionUnmute_player"/>
+    <addaction name="actionWatch_CVars"/>
    </widget>
    <addaction name="menuFile"/>
    <addaction name="menuOptions"/>
@@ -586,6 +587,11 @@
   <action name="actionAbout_Qt">
    <property name="text">
     <string>About Qt</string>
+   </property>
+  </action>
+  <action name="actionWatch_CVars">
+   <property name="text">
+    <string>Watch CVars</string>
    </property>
   </action>
  </widget>
