@@ -414,4 +414,4 @@ void Rcon::watchCvar(QString cvar)
     packet.append('\0');
 
     socket.write(huffmanEncode(packet));
-)
+}
