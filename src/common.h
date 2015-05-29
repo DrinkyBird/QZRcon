@@ -21,4 +21,8 @@
 #endif
 #endif 
 
+#ifdef _RELEASE
+#define QT_NO_DEBUG_OUTPUT
+#endif
+
 #endif // COMMON_H
