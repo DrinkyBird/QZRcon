@@ -4,6 +4,7 @@
 #include "kickwindow.h"
 #include "banwindow.h"
 #include "mutewindow.h"
+#include "cvarwatchwindow.h"
 #include "ui_rconwindow.h"
 #include "version.h"
 
@@ -902,3 +903,9 @@ void RconWindow::on_actionAbout_Qt_triggered()
     QMessageBox::aboutQt(this, "About Qt");
 }
 
+
+void RconWindow::on_actionWatch_CVars_triggered()
+{
+    CvarWatchWindow *w = new CvarWatchWindow(this);
+    w->show();
+}
