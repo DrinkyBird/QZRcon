@@ -33,7 +33,8 @@ HEADERS  += \
     src/kickwindow.h \
     src/banwindow.h \
     src/mutewindow.h \
-    version.h
+    version.h \
+    src/version.h
 
 FORMS    += \
     src/mainwindow.ui \
