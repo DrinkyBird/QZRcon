@@ -3,7 +3,7 @@
 #include "huffman.h"
 
 /* Skulltag protocol definitions */
-const int PROTOCOL_VERSION = 4;
+const int PROTOCOL_VERSION = 5;
 const int PONG_INTERVAL = 5000;
 const int TIMEDOUT_INTERVAL = 10000;
 const int Rcon::MAX_COMPLETIONS = 50;
@@ -20,7 +20,8 @@ enum
     CLRC_COMMAND,
     CLRC_PONG,
     CLRC_DISCONNECT,
-    CLRC_TABCOMPLETE
+    CLRC_TABCOMPLETE,
+    CLRC_WATCHCVAR,
 };
 
 /* Server packet types */
@@ -35,6 +36,10 @@ enum
     SVRC_UPDATE,
     SVRC_TABCOMPLETE,
     SVRC_TOOMANYTABCOMPLETES,
+    SVRC_WATCHINGCVAR,
+    SVRC_ALREADYWATCHINGCVAR,
+    SVRC_WATCHCVARNOTFOUND,
+    SVRC_CVARCHANGED,
 };
 
 /* Server update types */
@@ -297,10 +302,46 @@ void Rcon::processPacket(QBuffer &packet)
             emit tooManyCompletions(size);
             break;
         }
+        case SVRC_WATCHINGCVAR:
+        {
+            QString name = readString(packet);
+            QString value = readString(packet);
 
-        default:
-            qDebug() << "Unknown packet type: " << (quint8)type;
-    }
+            qDebug() << "Now watching cvar: " << name;
+            emit watchingCvar(name, value);
+            break;
+        }
+        case SVRC_ALREADYWATCHINGCVAR:
+        {
+            QString name = readString(packet);
+
+            qDebug() << "Already watching cvar: " << name;
+
+            emit alreadyWatchingCvar(name);
+            break;
+        }
+        case SVRC_WATCHCVARNOTFOUND:
+        {
+            QString name = readString(packet);
+
+            qDebug() << "CVar not found: " << name;
+
+            emit cvarNotFound(name);
+            break;
+        }
+        case SVRC_CVARCHANGED:
+        {
+            QString name = readString(packet);
+            QString value = readString(packet);
+
+            qDebug() << "Cvar changed: " << name;
+
+            emit cvarChanged(name, value);
+            break;
+        }
+            default:
+                qCritical() << "Unknown packet type: " << (quint8)type;
+        }
 }
 
 /* Process update packet */
@@ -368,5 +409,17 @@ void Rcon::tabComplete(QString toComplete)
     packet.append('\0');
 
     //for(unsigned int i = 0;i < 100;i++)
+    socket.write(huffmanEncode(packet));
+}
+
+// Tell the server we want to watch the value of `cvar`.
+void Rcon::watchCvar(QString cvar)
+{
+    qDebug() << "Asking to watch " << cvar;
+    QByteArray packet;
+    packet.append(CLRC_WATCHCVAR);
+    packet.append(cvar.toLatin1());
+    packet.append('\0');
+
     socket.write(huffmanEncode(packet));
 }
