@@ -51,6 +51,7 @@ public slots:
     bool checkCancelEvent();
     void forceloggedin();
     void tabComplete(QString toComplete);
+    void watchCvar(QString cvar);
 
 signals:
     void error(int e);
@@ -64,6 +65,10 @@ signals:
     void serverlog(QString message);
     void completions(QStringList completions, int size);
     void tooManyCompletions(int size);
+    void watchingCvar(QString cvar, QString value);
+    void cvarNotFound(QString cvar);
+    void alreadyWatchingCvar(QString cvar);
+    void cvarChanged(QString cvar, QString value);
 
 private:
     void abort();
