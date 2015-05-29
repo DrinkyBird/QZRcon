@@ -531,7 +531,7 @@ void RconWindow::closeEvent(QCloseEvent *event)
 }
 
 /* Send commands by enter key */
-void RconWindow::keyPrKeyEvent *event)
+void RconWindow::keyPressEvent(QKeyEvent *event)
 {
     switch (event->key())
     {
