@@ -204,24 +204,31 @@ void Rcon::processPacket(QBuffer &packet)
     switch (type)
     {
         case SVRC_OLDPROTOCOL:
+        {
             qDebug() << "Version mismatch between server and Rcon.";
             abort();
             emit error(InvalidVersion);
             break;
+        }
 
         case SVRC_BANNED:
+        {
             qDebug() << "You're banned on this server!";
             abort();
             emit error(Banned);
             break;
+        }
 
         case SVRC_INVALIDPASSWORD:
+        {
             qDebug() << "Invalid password.";
             abort();
             emit error(InvalidPassword);
             break;
+        }
 
         case SVRC_SALT:
+        {
             qDebug() << "Server is OK! Sending password...";
             setState(SendingPassword);
 
@@ -229,8 +236,10 @@ void Rcon::processPacket(QBuffer &packet)
             QString salt = readString(packet);
             sendPassword(salt.toLatin1());
             break;
+        }
 
         case SVRC_LOGGEDIN:
+        {
             qDebug() << "You're logged in!";
             setState(LoggedIn);
             keepaliveTimer.start(PONG_INTERVAL); // Start sending keepalive packets.
@@ -249,16 +258,22 @@ void Rcon::processPacket(QBuffer &packet)
             packet.getChar(&numlogmessages);
             for (int i = 0; i < numlogmessages; i++) emit serverlog(readString(packet));
             break;
+        }
 
         case SVRC_MESSAGE:
+        {
             emit message(readString(packet));
             break;
+        }
 
         case SVRC_UPDATE:
+        {
             processUpdate(packet);
             break;
+        }
 
         case SVRC_TABCOMPLETE:
+        {
             char size;
             QStringList commands;
 
@@ -272,13 +287,16 @@ void Rcon::processPacket(QBuffer &packet)
 
             emit completions(commands, size);
             break;
+        }
 
         case SVRC_TOOMANYTABCOMPLETES:
+        {
             char size;
             packet.getChar(&size);
 
             emit tooManyCompletions(size);
             break;
+        }
 
         default:
             qDebug() << "Unknown packet type: " << (quint8)type;
@@ -294,16 +312,21 @@ void Rcon::processUpdate(QBuffer &packet)
     switch (type)
     {
         case SVRCU_ADMINCOUNT:
+        {
             char admincount;
             packet.getChar(&admincount);
             emit adminCountChanged(admincount);
             break;
+        }
 
         case SVRCU_MAP:
+        {
             emit mapChanged(readString(packet));
             break;
+        }
 
         case SVRCU_PLAYERDATA:
+        {
             char playercount;
             packet.getChar(&playercount);
             emit playerCountChanged(playercount);
@@ -319,6 +342,7 @@ void Rcon::processUpdate(QBuffer &packet)
 
             emit playerListChanged(players);
             break;
+        }
     }
 }
 
