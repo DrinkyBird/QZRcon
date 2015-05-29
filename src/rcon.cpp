@@ -284,6 +284,36 @@ void Rcon::processPacket(QBuffer &packet)
         emit tooManyCompletions(size);
         break;
     }
+    case SVRC_WATCHINGCVAR:
+    {
+        QString name = readString(packet);
+        QString value = readString(packet);
+
+        emit watchingCvar(name, value);
+        break;
+    }
+    case SVRC_ALREADYWATCHINGCVAR:
+    {
+        QString name = readString(packet);
+
+        emit alreadyWatchingCvar(name);
+        break;
+    }
+    case SVRC_WATCHCVARNOTFOUND:
+    {
+        QString name = readString(packet);
+
+        emit cvarNotFound(name);
+        break;
+    }
+    case SVRC_CVARCHANGED:
+    {
+        QString name = readString(packet);
+        QString value = readString(packet);
+
+        emit cvarChanged(name, value);
+        break;
+    }
     default:
         qDebug() << "Unknown packet type: " << (quint8)type;
     }
@@ -356,3 +386,14 @@ void Rcon::tabComplete(QString toComplete)
     //for(unsigned int i = 0;i < 100;i++)
     socket.write(huffmanEncode(packet));
 }
+
+// Tell the server we want to watch the value of `cvar`.
+void Rcon::watchCvar(QString cvar)
+{
+    QByteArray packet;
+    packet.append(CLRC_WATCHCVAR);
+    packet.append(cvar.toLatin1());
+    packet.append('\0');
+
+    socket.write(huffmanEncode(packet));
+)
