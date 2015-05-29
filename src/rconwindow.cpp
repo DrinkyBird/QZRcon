@@ -525,7 +525,8 @@ void RconWindow::closeEvent(QCloseEvent *event)
     ret = QMessageBox::question( this,  QApplication::applicationName(), tr("Do you want to close QZrcon?"),
         QMessageBox::Yes | QMessageBox::No , QMessageBox::No );
 
-    if (ret == QMessageBox::No) event->ignore();
+    if (ret == QMessageBox::No)
+        event->ignore();
     else
         rcon->disconnect();
 }
