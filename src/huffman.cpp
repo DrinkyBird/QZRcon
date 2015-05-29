@@ -337,9 +337,8 @@ static float HuffFreq[256]=
 void HUFFMAN_Construct( void )
 {
 #ifdef _DEBUG
-	huffman_ZeroFreq();
+    huffman_ZeroFreq();
 #endif
-
 	huffman_BuildTree(HuffFreq);
 
 	// Free the table when the program closes.

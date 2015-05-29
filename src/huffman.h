@@ -35,6 +35,10 @@ void HUFFMAN_Destruct( void );
 void HUFFMAN_Encode(const unsigned char *in, unsigned char *out, int inlen, int *outlen );
 void HUFFMAN_Decode(const unsigned char *in, unsigned char *out, int inlen, int *outlen );
 
+#ifdef _DEBUG
+void huffman_ZeroFreq( void );
+#endif
+
 //*****************************************************************************
 //	QT WRAPPERS
 
