@@ -22,7 +22,6 @@ SOURCES += \
     src/kickwindow.cpp \
     src/banwindow.cpp \
     src/mutewindow.cpp \
-    cvarwatchwindow.cpp \
     src/cvarwatchwindow.cpp
 
 HEADERS  += \
@@ -35,9 +34,7 @@ HEADERS  += \
     src/kickwindow.h \
     src/banwindow.h \
     src/mutewindow.h \
-    version.h \
     src/version.h \
-    cvarwatchwindow.h \
     src/cvarwatchwindow.h
 
 FORMS    += \
@@ -47,7 +44,6 @@ FORMS    += \
     src/kickwindow.ui \
     src/banwindow.ui \
     src/mutewindow.ui \
-    cvarwatchwindow.ui \
     src/cvarwatchwindow.ui
 
 OTHER_FILES += \
