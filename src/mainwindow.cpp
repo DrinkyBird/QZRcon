@@ -19,7 +19,7 @@ MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent),
     ui(new Ui::MainWindow)
 {
-    qDebug() << "QZRcon " << QString(VERSION) << " started. Hello, world! :)";
+    qDebug() << "QZRcon" << QString(VERSION).toStdString().c_str() << "started. Hello, world! :)";
 
     ui->setupUi(this);
     setStatus(tr("Ready"));
