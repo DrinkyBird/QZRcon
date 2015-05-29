@@ -1,0 +1,141 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html><head>
+<meta content="text/html; charset=ISO-8859-1" http-equiv="content-type"><title>Rcon Protocol</title></head>
+<body>
+<h1 id="firstHeading" class="firstHeading" style="border-bottom: 1px solid rgb(170, 170, 170); margin: 0px 0px 0.1em; color: rgb(0, 0, 0); background-image: none; font-weight: normal; overflow: hidden; padding-top: 0.5em; padding-bottom: 0px; font-size: 24px; line-height: 1.2em; font-family: sans-serif; font-style: normal; font-variant: normal; letter-spacing: normal; text-align: start; text-indent: 0px; text-transform: none; white-space: normal; word-spacing: 0px;"><span dir="auto">RCON protocol Documentation</span></h1>
+Based on <span style="color: rgb(51, 102, 255);">Skulltag</span>
+wiki<br>
+<div id="bodyContent" class="mw-body" style="color: rgb(0, 0, 0); font-family: sans-serif; font-size: 13px; font-style: normal; font-variant: normal; font-weight: normal; letter-spacing: normal; line-height: 19.0469px; text-align: start; text-indent: 0px; text-transform: none; white-space: normal; word-spacing: 0px;">
+<div id="contentSub" style="margin: 0px 0px 1.4em 1em; font-size: 11px; line-height: 1.2em; color: rgb(125, 125, 125); width: auto;"></div>
+<div id="jump-to-nav" class="mw-jump" style="overflow: hidden; height: 0px; margin-top: -1.4em; margin-bottom: 1.4em;"></div>
+<div id="mw-content-text" class="mw-content-ltr" style="direction: ltr;" dir="ltr" lang="en">
+<p style="margin: 0.4em 0px 0.5em; line-height: 1.5em;">Server
+admins often need to manage their servers, but launching Skulltag is
+slow and inconvenient. The<span class="Apple-converted-space">&nbsp;</span><i>RCON
+protocol</i><span class="Apple-converted-space">&nbsp;</span>allows
+us to make tools that connect to servers quickly and directly, letting
+administrators manage their servers with ease.</p>
+<p style="margin: 0.4em 0px 0.5em; line-height: 1.5em;">This
+article describes how to create RCON clients of your own that connect
+to Skulltag servers.</p>
+<table id="toc" class="toc" style="border: 1px solid rgb(170, 170, 170); padding: 5px; font-size: 12px; background-color: rgb(249, 249, 249);">
+<tbody>
+<tr>
+<td>
+<div id="toctitle" style="direction: ltr; text-align: center;">
+<h2 style="border: medium none ; margin: 0px 0px 0.6em; padding: 0px; color: black; background-image: none; font-weight: bold; overflow: hidden; font-size: 12px; display: inline;">What is here?</h2>
+<span class="toctoggle" style="font-size: 11px;"></span></div>
+<ul style="margin: 0.3em 0px; padding: 0px; line-height: 1.5em; list-style-type: none; list-style-image: none; text-align: left;">
+<li class="toclevel-1 tocsection-1" style="margin-bottom: 0.1em;"><span style="text-decoration: none; color: rgb(90, 54, 150); background-image: none;"><span class="tocnumber">1</span><span class="Apple-converted-space">&nbsp;</span><span class="toctext">Protocol information</span></span></li>
+<li class="toclevel-1 tocsection-2" style="margin-bottom: 0.1em;"><span style="text-decoration: none; color: rgb(90, 54, 150); background-image: none;"><span class="tocnumber">2</span><span class="Apple-converted-space">&nbsp;</span><span class="toctext">The basics</span></span></li>
+<li class="toclevel-1 tocsection-3" style="margin-bottom: 0.1em;"><span style="text-decoration: none; color: rgb(90, 54, 150); background-image: none;"><span class="tocnumber">3</span><span class="Apple-converted-space">&nbsp;</span><span class="toctext">Message headers</span></span></li>
+<li class="toclevel-1 tocsection-4" style="margin-bottom: 0.1em;"><span style="text-decoration: none; color: rgb(90, 54, 150); background-image: none;"><span class="tocnumber">4</span><span class="Apple-converted-space">&nbsp;</span><span class="toctext">Connecting to a server</span></span></li>
+<li class="toclevel-1 tocsection-5" style="margin-bottom: 0.1em;"><span style="text-decoration: none; color: rgb(90, 54, 150); background-image: none;"><span class="tocnumber">5</span><span class="Apple-converted-space">&nbsp;</span><span class="toctext">Receiving updates</span></span></li>
+<li class="toclevel-1 tocsection-6" style="margin-bottom: 0.1em;"><span style="text-decoration: none; color: rgb(90, 54, 150); background-image: none;"><span class="tocnumber">6</span><span class="Apple-converted-space">&nbsp;</span><span class="toctext">Sending commands</span></span></li>
+<li class="toclevel-1 tocsection-7" style="margin-bottom: 0.1em;"><span style="text-decoration: none; color: rgb(90, 54, 150); background-image: none;"><span class="tocnumber">7</span><span class="Apple-converted-space">&nbsp;</span><span class="toctext">Staying connected</span></span></li>
+<li class="toclevel-1 tocsection-8" style="margin-bottom: 0.1em;"><span style="text-decoration: none; color: rgb(90, 54, 150); background-image: none;"><span class="tocnumber">8</span><span class="Apple-converted-space">&nbsp;</span><span class="toctext">Disconnecting</span></span></li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+<h2 style="border-bottom: 1px solid rgb(170, 170, 170); margin: 0px 0px 0.6em; color: black; background-image: none; font-weight: normal; overflow: hidden; padding-top: 0.5em; padding-bottom: 0.17em; font-size: 19px;"><span class="mw-headline" id="Protocol_information">Protocol
+information</span></h2>
+<p style="margin: 0.4em 0px 0.5em; line-height: 1.5em;">Version:<span class="Apple-converted-space">&nbsp;</span><b>3</b></p>
+
+<h2 style="border-bottom: 1px solid rgb(170, 170, 170); margin: 0px 0px 0.6em; color: black; background-image: none; font-weight: normal; overflow: hidden; padding-top: 0.5em; padding-bottom: 0.17em; font-size: 19px;"><span class="mw-headline" id="The_basics">The basics</span></h2>
+<p style="margin: 0.4em 0px 0.5em; line-height: 1.5em;">All
+Skulltag servers use<span class="Apple-converted-space">&nbsp;</span><b>UDP</b><span class="Apple-converted-space">&nbsp;</span>as
+their network protocol. Additionally, all traffic is compressed using
+the Huffman algorithm to save bandwidth. Therefore, you'll need<span class="Apple-converted-space">&nbsp;</span><a rel="nofollow" class="external text" href="http://www.skulltag.com/download/huffman.zip" style="text-decoration: none; color: rgb(51, 102, 187); padding-right: 13px; background-position: 100% 50%;">a
+copy of huffman.cpp or huffman.java</a><span class="Apple-converted-space">&nbsp;</span>to
+encode and decode your traffic appropriately.</p>
+<span style="font-weight: bold;">Tips</span>:We're
+using QZrcon-modifed huffman sources for Qt support.
+<p style="margin: 0.4em 0px 0.5em; line-height: 1.5em;">Definition
+of data types used in this article:</p>
+<pre style="border: 1px dashed rgb(47, 111, 171); padding: 1em; font-family: monospace,Courier; color: black; background-color: rgb(249, 249, 249); line-height: 1.1em;"> Byte: 8 bit integer (see the enumerated types below)<br> String: null-terminated series of Bytes<br></pre>
+<h2 style="border-bottom: 1px solid rgb(170, 170, 170); margin: 0px 0px 0.6em; color: black; background-image: none; font-weight: normal; overflow: hidden; padding-top: 0.5em; padding-bottom: 0.17em; font-size: 19px;"><span class="mw-headline" id="Message_headers">Message
+headers</span></h2>
+<p style="margin: 0.4em 0px 0.5em; line-height: 1.5em;">Messages
+that the server sends to the client always begin with one of the
+following bytes:</p>
+<pre style="border: 1px dashed rgb(47, 111, 171); padding: 1em; font-family: monospace,Courier; color: black; background-color: rgb(249, 249, 249); line-height: 1.1em;">enum<br>{<br>	SVRC_OLDPROTOCOL = 32, //This set of enumerations starts at 32, increments by one<br>	SVRC_BANNED,<br>	SVRC_SALT,<br>	SVRC_LOGGEDIN,<br>	SVRC_INVALIDPASSWORD,<br>	SVRC_MESSAGE,<br>	SVRC_UPDATE,<br>};<br></pre>
+<p style="margin: 0.4em 0px 0.5em; line-height: 1.5em;">Messages
+that the client sends to the server always begin with one of the
+following bytes:</p>
+<pre style="border: 1px dashed rgb(47, 111, 171); padding: 1em; font-family: monospace,Courier; color: black; background-color: rgb(249, 249, 249); line-height: 1.1em;">enum<br>{<br>	CLRC_BEGINCONNECTION = 52, // Also increments by one<br>	CLRC_PASSWORD,<br>	CLRC_COMMAND,<br>	CLRC_PONG,<br>	CLRC_DISCONNECT,<br>};<br></pre>
+<p style="margin: 0.4em 0px 0.5em; line-height: 1.5em;">Also,
+when the server sends SVRC_UPDATE, it's immediately followed by another
+byte:</p>
+<pre style="border: 1px dashed rgb(47, 111, 171); padding: 1em; font-family: monospace,Courier; color: black; background-color: rgb(249, 249, 249); line-height: 1.1em;">enum<br>{<br>	SVRCU_PLAYERDATA = 0,<br>	SVRCU_ADMINCOUNT,<br>	SVRCU_MAP,<br>};<br></pre>
+<h2 style="border-bottom: 1px solid rgb(170, 170, 170); margin: 0px 0px 0.6em; color: black; background-image: none; font-weight: normal; overflow: hidden; padding-top: 0.5em; padding-bottom: 0.17em; font-size: 19px;"><span class="mw-headline" id="Connecting_to_a_server">Connecting
+to a server</span></h2>
+<p style="margin: 0.4em 0px 0.5em; line-height: 1.5em;">Begin
+by sending two bytes to the server: CLRC_BEGINCONNECTION, followed by
+the protocol version you support (see above).</p>
+<p style="margin: 0.4em 0px 0.5em; line-height: 1.5em;"><b>If
+you're banned by the server</b>, you'll receive SVRC_BANNED.</p>
+<p style="margin: 0.4em 0px 0.5em; line-height: 1.5em;"><b>If
+your version of the protocol is too old</b>, you'll receive
+SVRC_OLDPROTOCOL, followed by the server's protocol version (byte), and
+the server's version string (string).</p>
+<p style="margin: 0.4em 0px 0.5em; line-height: 1.5em;">Otherwise,
+you'll receive the all-clear with SVRC_SALT, followed by a<span class="Apple-converted-space">&nbsp;</span><a rel="nofollow" class="external text" href="http://en.wikipedia.org/wiki/Salt_%28cryptography%29" style="text-decoration: none; color: rgb(51, 102, 187);">salt</a><span class="Apple-converted-space">&nbsp;</span>you'll
+use when you hash your password (string). This should be a 32 byte salt.</p>
+<p style="margin: 0.4em 0px 0.5em; line-height: 1.5em;">Now,
+create an MD5 hash of the provided salt, followed by the server's RCON
+password. You want to concatenate the salt and password together (salt
+first, password second), and then digest it into an MD5 hash. You have
+to send the hex version of the hash to the server. Send the server a
+packet with CLRC_PASSWORD and the hash. The pre-digested password does
+not need to be null-terminated.</p>
+<p style="margin: 0.4em 0px 0.5em; line-height: 1.5em;"><b>If
+the password is incorrect,</b><span class="Apple-converted-space">&nbsp;</span>you'll
+receive SVRC_INVALIDPASSWORD.</p>
+<p style="margin: 0.4em 0px 0.5em; line-height: 1.5em;">Otherwise,
+you'll receive SVRC_LOGGEDIN. You're in! This is followed by the
+server's protocol version (byte), hostname (string) and some
+information on the server using the SVRC_UPDATE method described below.
+Basically, the server sends you the number of updates you're about to
+receive (byte), then the data for each one (which includes the header
+(SVRCU_MAP, SVRCU_ADMINCOUNT, etc), but not SVRC_UPDATE). Finally, some
+recent lines of the console are sent: first the number of lines (byte)
+followed by each line (strings).</p>
+<h2 style="border-bottom: 1px solid rgb(170, 170, 170); margin: 0px 0px 0.6em; color: black; background-image: none; font-weight: normal; overflow: hidden; padding-top: 0.5em; padding-bottom: 0.17em; font-size: 19px;"><span class="mw-headline" id="Receiving_updates">Receiving
+updates</span></h2>
+<p style="margin: 0.4em 0px 0.5em; line-height: 1.5em;">The
+server will now send you information as events occur on the server.</p>
+<p style="margin: 0.4em 0px 0.5em; line-height: 1.5em;"><b>When
+a new line is printed on the server console</b>, you'll receive
+SVRC_MESSAGE, followed by the message (string).</p>
+<p style="margin: 0.4em 0px 0.5em; line-height: 1.5em;">Other
+types of updates have been streamlined a little. They all start with
+SVRC_UPDATE. Then...</p>
+<p style="margin: 0.4em 0px 0.5em; line-height: 1.5em;"><b>When
+the map changes</b>, it's followed by SVRCU_MAP and the new map
+name (string).</p>
+<p style="margin: 0.4em 0px 0.5em; line-height: 1.5em;"><b>When
+the number of other RCON admins changes</b>, it's followed by
+SVRCU_ADMINCOUNT and the number (byte).</p>
+<p style="margin: 0.4em 0px 0.5em; line-height: 1.5em;"><b>When
+the number of players changes, or a players changes his name</b>,
+you'll receive SVRCU_PLAYERDATA, followed by the number of players
+(byte), and each of their names (strings).</p>
+<h2 style="border-bottom: 1px solid rgb(170, 170, 170); margin: 0px 0px 0.6em; color: black; background-image: none; font-weight: normal; overflow: hidden; padding-top: 0.5em; padding-bottom: 0.17em; font-size: 19px;"><span class="mw-headline" id="Sending_commands">Sending
+commands</span></h2>
+<p style="margin: 0.4em 0px 0.5em; line-height: 1.5em;">Send
+the server CLRC_COMMAND, followed by the command (string). This should
+be a console command, and the server will execute it verbatim.</p>
+<h2 style="border-bottom: 1px solid rgb(170, 170, 170); margin: 0px 0px 0.6em; color: black; background-image: none; font-weight: normal; overflow: hidden; padding-top: 0.5em; padding-bottom: 0.17em; font-size: 19px;"><span class="mw-headline" id="Staying_connected">Staying
+connected</span></h2>
+<p style="margin: 0.4em 0px 0.5em; line-height: 1.5em;">By
+default, RCON clients not heard from within 10 seconds are timed out by
+the server. Therefore, you need to send the server CLRC_PONG regularly
+(we suggest every 5 seconds or so, to compensate for lag).</p>
+<h2 style="border-bottom: 1px solid rgb(170, 170, 170); margin: 0px 0px 0.6em; color: black; background-image: none; font-weight: normal; overflow: hidden; padding-top: 0.5em; padding-bottom: 0.17em; font-size: 19px;"><span class="mw-headline" id="Disconnecting">Disconnecting</span></h2>
+<p style="margin: 0.4em 0px 0.5em; line-height: 1.5em;">Send
+the server CLRC_DISCONNECT.</p><span style="font-weight: bold;">
+Happy coding!</span></div>
+</div>
+</body></html>
