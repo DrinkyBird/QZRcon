@@ -307,6 +307,7 @@ void Rcon::processPacket(QBuffer &packet)
             QString name = readString(packet);
             QString value = readString(packet);
 
+            qDebug() << "Now watching cvar: " << name;
             emit watchingCvar(name, value);
             break;
         }
@@ -314,12 +315,16 @@ void Rcon::processPacket(QBuffer &packet)
         {
             QString name = readString(packet);
 
+            qDebug() << "Already watching cvar: " << name;
+
             emit alreadyWatchingCvar(name);
             break;
         }
         case SVRC_WATCHCVARNOTFOUND:
         {
-           QString name = readString(packet);
+            QString name = readString(packet);
+
+            qDebug() << "CVar not found: " << name;
 
             emit cvarNotFound(name);
             break;
@@ -329,11 +334,13 @@ void Rcon::processPacket(QBuffer &packet)
             QString name = readString(packet);
             QString value = readString(packet);
 
+            qDebug() << "Cvar changed: " << name;
+
             emit cvarChanged(name, value);
             break;
         }
             default:
-                qDebug() << "Unknown packet type: " << (quint8)type;
+                qCritical() << "Unknown packet type: " << (quint8)type;
         }
 }
 
@@ -408,6 +415,7 @@ void Rcon::tabComplete(QString toComplete)
 // Tell the server we want to watch the value of `cvar`.
 void Rcon::watchCvar(QString cvar)
 {
+    qDebug() << "Asking to watch " << cvar;
     QByteArray packet;
     packet.append(CLRC_WATCHCVAR);
     packet.append(cvar.toLatin1());

@@ -1,16 +1,15 @@
 #include "cvarwatchwindow.h"
 #include "ui_cvarwatchwindow.h"
 
-#include <QMessageBox>
+QStringList watching = QStringList();
 
-CvarWatchWindow::CvarWatchWindow(QWidget *parent) :
-    QDialog(parent),
+CvarWatchWindow::CvarWatchWindow(RconWindow *rconwindow) :
+    QWidget(0),
     ui(new Ui::CvarWatchWindow),
-    rconwindow(rconwindow),
-    Rcon(rcon)
+    rconwindow(rconwindow)
 {
     ui->setupUi(this);
-    connect(rcon, SIGNAL(watchingCvar(QString, QString)), this, SLOT(onCvarWatched(QString, QString)));
+    connect(rconwindow->rcon, SIGNAL(alreadyWatchingCvar(QString)), this, SLOT(onCvarAlreadyWatched(QString)));
 }
 
 CvarWatchWindow::~CvarWatchWindow()
@@ -18,13 +17,14 @@ CvarWatchWindow::~CvarWatchWindow()
     delete ui;
 }
 
-void CvarWatchWindow::on_watchButton_clicked()
+void CvarWatchWindow::on_watchCvarButton_clicked()
 {
-
+    QString toWatch = ui->lineEdit->text();
+    qDebug() << QString("Requesting for %1 to be watched.").arg(toWatch);
+    rconwindow->rcon->watchCvar(toWatch);
 }
 
-void CvarWatchWindow::onCvarWatched(QString cvar, QString value)
+void CvarWatchWindow::onCvarAlreadyWatched(QString name)
 {
-    QMessageBox infoBox = QMessageBox(QMessageBox::Icon::Information, "QZRcon", "CVar was added to your watch list successfully.");
-    infoBox.show();
+    qWarning() << "Cvar " << name.toStdString().c_str() << " is already being watched";
 }
