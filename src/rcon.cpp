@@ -203,84 +203,85 @@ void Rcon::processPacket(QBuffer &packet)
 
     switch (type)
     {
-    case SVRC_OLDPROTOCOL:
-        qDebug() << "Version mismatch between server and Rcon.";
-        abort();
-        emit error(InvalidVersion);
-        break;
-    case SVRC_BANNED:
-        qDebug() << "You're banned on this server!";
-        abort();
-        emit error(Banned);
-        break;
-    case SVRC_INVALIDPASSWORD:
-        qDebug() << "Invalid password.";
-        abort();
-        emit error(InvalidPassword);
-        break;
-    case SVRC_SALT:
-    {
-        qDebug() << "Server is OK! Sending password...";
-        setState(SendingPassword);
+        case SVRC_OLDPROTOCOL:
+            qDebug() << "Version mismatch between server and Rcon.";
+            abort();
+            emit error(InvalidVersion);
+            break;
 
-        /* Read salt string */
-        QString salt = readString(packet);
-        sendPassword(salt.toLatin1());
-        break;
-    }
-    case SVRC_LOGGEDIN:
-    {
-        qDebug() << "You're logged in!";
-        setState(LoggedIn);
-        keepaliveTimer.start(PONG_INTERVAL); // Start sending keepalive packets.
+        case SVRC_BANNED:
+            qDebug() << "You're banned on this server!";
+            abort();
+            emit error(Banned);
+            break;
 
-        /* Read server name */
-        emit servernamereceived(readString(packet));
+        case SVRC_INVALIDPASSWORD:
+            qDebug() << "Invalid password.";
+            abort();
+            emit error(InvalidPassword);
+            break;
 
-        /* Read all updates */
-        char numupdates;
-        packet.getChar(&numupdates);
-        for (int i = 0; i < numupdates; i++)
+        case SVRC_SALT:
+            qDebug() << "Server is OK! Sending password...";
+            setState(SendingPassword);
+
+            /* Read salt string */
+            QString salt = readString(packet);
+            sendPassword(salt.toLatin1());
+            break;
+
+        case SVRC_LOGGEDIN:
+            qDebug() << "You're logged in!";
+            setState(LoggedIn);
+            keepaliveTimer.start(PONG_INTERVAL); // Start sending keepalive packets.
+
+            /* Read server name */
+            emit servernamereceived(readString(packet));
+
+            /* Read all updates */
+            char numupdates;
+            packet.getChar(&numupdates);
+            for (int i = 0; i < numupdates; i++)
+                processUpdate(packet);
+
+            /* Read chat log */
+            char numlogmessages;
+            packet.getChar(&numlogmessages);
+            for (int i = 0; i < numlogmessages; i++) emit serverlog(readString(packet));
+            break;
+
+        case SVRC_MESSAGE:
+            emit message(readString(packet));
+            break;
+
+        case SVRC_UPDATE:
             processUpdate(packet);
+            break;
 
-        /* Read chat log */
-        char numlogmessages;
-        packet.getChar(&numlogmessages);
-        for (int i = 0; i < numlogmessages; i++) emit serverlog(readString(packet));
-        break;
-    }
-    case SVRC_MESSAGE:
-        emit message(readString(packet));
-        break;
-    case SVRC_UPDATE:
-        processUpdate(packet);
-        break;
-    case SVRC_TABCOMPLETE:
-    {
-        char size;
-        QStringList commands;
+        case SVRC_TABCOMPLETE:
+            char size;
+            QStringList commands;
 
-        packet.getChar(&size);
+            packet.getChar(&size);
 
-        for (int i = 0; i < size; i++)
-        {
-            QString command = readString(packet);
-            commands.append(command);
-        }
+            for (int i = 0; i < size; i++)
+            {
+                QString command = readString(packet);
+                commands.append(command);
+            }
 
-        emit completions(commands, size);
-        break;
-    }
-    case SVRC_TOOMANYTABCOMPLETES:
-    {
-        char size;
-        packet.getChar(&size);
+            emit completions(commands, size);
+            break;
 
-        emit tooManyCompletions(size);
-        break;
-    }
-    default:
-        qDebug() << "Unknown packet type: " << (quint8)type;
+        case SVRC_TOOMANYTABCOMPLETES:
+            char size;
+            packet.getChar(&size);
+
+            emit tooManyCompletions(size);
+            break;
+
+        default:
+            qDebug() << "Unknown packet type: " << (quint8)type;
     }
 }
 
@@ -292,38 +293,32 @@ void Rcon::processUpdate(QBuffer &packet)
 
     switch (type)
     {
-    case SVRCU_ADMINCOUNT:
-    {
-        char admincount;
-        packet.getChar(&admincount);
-        emit adminCountChanged(admincount);
-        break;
-    }
+        case SVRCU_ADMINCOUNT:
+            char admincount;
+            packet.getChar(&admincount);
+            emit adminCountChanged(admincount);
+            break;
 
-    case SVRCU_MAP:
-    {
-        emit mapChanged(readString(packet));
-        break;
-    }
+        case SVRCU_MAP:
+            emit mapChanged(readString(packet));
+            break;
 
-    case SVRCU_PLAYERDATA:
-    {
-        char playercount;
-        packet.getChar(&playercount);
-        emit playerCountChanged(playercount);
+        case SVRCU_PLAYERDATA:
+            char playercount;
+            packet.getChar(&playercount);
+            emit playerCountChanged(playercount);
 
-        QList<PlayerInfo> players;
-        for (int i = 0; i < playercount; i++)
-        {
-            PlayerInfo info;
-            info.name = " " + readString(packet);
+            QList<PlayerInfo> players;
+            for (int i = 0; i < playercount; i++)
+            {
+                PlayerInfo info;
+                info.name = " " + readString(packet);
 
-            players.append(info);
-        }
+                players.append(info);
+            }
 
-        emit playerListChanged(players);
-        break;
-    }
+            emit playerListChanged(players);
+            break;
     }
 }
 
