@@ -3,7 +3,7 @@
 #include "huffman.h"
 
 /* Skulltag protocol definitions */
-const int PROTOCOL_VERSION = 4;
+const int PROTOCOL_VERSION = 5;
 const int PONG_INTERVAL = 5000;
 const int TIMEDOUT_INTERVAL = 10000;
 const int Rcon::MAX_COMPLETIONS = 50;
@@ -20,7 +20,8 @@ enum
     CLRC_COMMAND,
     CLRC_PONG,
     CLRC_DISCONNECT,
-    CLRC_TABCOMPLETE
+    CLRC_TABCOMPLETE,
+    CLRC_WATCHCVAR,
 };
 
 /* Server packet types */
@@ -35,6 +36,10 @@ enum
     SVRC_UPDATE,
     SVRC_TABCOMPLETE,
     SVRC_TOOMANYTABCOMPLETES,
+    SVRC_WATCHINGCVAR,
+    SVRC_ALREADYWATCHINGCVAR,
+    SVRC_WATCHCVARNOTFOUND,
+    SVRC_CVARCHANGED,
 };
 
 /* Server update types */
