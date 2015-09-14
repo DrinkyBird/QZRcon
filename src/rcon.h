@@ -62,6 +62,7 @@ signals:
     void playerListChanged(QList<PlayerInfo> players);
     void servernamereceived(QString name);
     void serverlog(QString message);
+    void history(QString message);
     void completions(QStringList completions, int size);
     void tooManyCompletions(int size);
 

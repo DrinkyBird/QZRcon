@@ -33,6 +33,7 @@ private slots:
     /* Events */
     void onStateChange(int state);
     void onMessage(QString message);
+    void onHistory(QString message);
     void onMapChanged(QString mapname);
     void onAdminCountChanged(int admincount);
     void onPlayerCountChanged(int playercount);

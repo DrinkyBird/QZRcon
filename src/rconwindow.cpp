@@ -31,6 +31,8 @@ QString logautosavepath; // log path
 QSettings *ctagsettings = NULL;
 
 QString defcolor = "000000"; // default color (black)
+
+bool gettingHistory = true; //[SB] prevents ear rape
 /* ----------------------------------------------- */
 
 RconWindow::RconWindow(QWidget *parent, Rcon *rcon) :
@@ -45,6 +47,7 @@ RconWindow::RconWindow(QWidget *parent, Rcon *rcon) :
     connect(ui->buttonSend, SIGNAL(clicked()), this, SLOT(send()));
     connect(rcon, SIGNAL(stateChanged(int)), this, SLOT(onStateChange(int)));
     connect(rcon, SIGNAL(message(QString)), this, SLOT(onMessage(QString)));
+    connect(rcon, SIGNAL(history(QString)), this, SLOT(onHistory(QString)));
     connect(rcon, SIGNAL(mapChanged(QString)), this, SLOT(onMapChanged(QString)));
     connect(rcon, SIGNAL(adminCountChanged(int)), this, SLOT(onAdminCountChanged(int)));
     connect(rcon, SIGNAL(playerCountChanged(int)), this, SLOT(onPlayerCountChanged(int)));
@@ -380,7 +383,14 @@ void RconWindow::onMessage(QString message)
     /* Process chat sound */
     if (chatsound.isEmpty() && (ui->actionPlay_chat_sound->isChecked()))
         qDebug() << "Couldn't open sound file: chat sound path is not set!";
-    else if(ui->actionPlay_chat_sound->isChecked()) QSound::play(chatsound);
+    else if(ui->actionPlay_chat_sound->isChecked() && !gettingHistory) QSound::play(chatsound);
+}
+
+void RconWindow::onHistory(QString message)
+{
+   gettingHistory = true;
+   onMessage(message);
+   gettingHistory = false;
 }
 
 /* Receive a mapname */

@@ -256,7 +256,7 @@ void Rcon::processPacket(QBuffer &packet)
             /* Read chat log */
             char numlogmessages;
             packet.getChar(&numlogmessages);
-            for (int i = 0; i < numlogmessages; i++) emit serverlog(readString(packet));
+            for (int i = 0; i < numlogmessages; i++) emit history(readString(packet));
             break;
         }
 
